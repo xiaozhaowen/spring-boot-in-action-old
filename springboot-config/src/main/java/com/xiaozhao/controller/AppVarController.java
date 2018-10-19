@@ -38,12 +38,6 @@ public class AppVarController {
     private String h_club;
 
 
-    @GetMapping
-    public String hello() {
-        return "Hello World";
-    }
-
-
     @GetMapping("/info")
     public String getCustomConfigInfo() {
         return name + " " + age + " " + playerInfo;

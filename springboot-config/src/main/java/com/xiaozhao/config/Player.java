@@ -4,11 +4,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
+ * 球员信息的实体类
+ *
  * @author xiaozhao
  * @date 2018/10/19上午10:09
  */
 @ConfigurationProperties(prefix = "player")
-@Component
+@Component // 此注解可加可不加
 public class Player {
 
     private String name;

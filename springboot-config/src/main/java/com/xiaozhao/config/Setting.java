@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
+ * 自定义配置实体类
+ *
  * @author xiaozhao
  * @date 2018/10/18下午4:59
  */
