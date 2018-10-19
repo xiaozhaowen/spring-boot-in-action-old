@@ -1,0 +1,20 @@
+# 系统相关的配置
+server:
+  port: 8081
+
+
+
+# 自定义配置
+
+# 1、简单变量
+name: Kobe Bryant
+age: 33
+# 引用其他变量
+playerInfo: "name:${name},age:${age}"
+
+# 2、有层次关系的
+player:
+  name: 科比
+  club: 湖人
+  age: 33
+
