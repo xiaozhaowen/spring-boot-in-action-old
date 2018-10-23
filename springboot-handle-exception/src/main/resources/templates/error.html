@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot 错误处理</title>
+</head>
+<body>
+    <h1>错误处理</h1>
+    <h3 th:text="'错误信息：'+${msg}"></h3>
+    <h3 th:text="'请求地址：'+${url}"></h3>
+    <h2>异常堆栈跟踪日志StackTrace</h2>
+    <div th:each="line:${stackTrace}">
+        <div th:text="${line}"></div>
+    </div>
+</body>
+</html>
