@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!--
+      说明：
+      1、日志级别及文件
+          日志记录采用分级记录，级别与日志文件名相对应，不同级别的日志信息记录到不同的日志文件中
+          例如：error级别记录到log_error_xxx.log或log_error.log（该文件为当前记录的日志文件），而log_error_xxx.log为归档日志，
+          日志文件按日期记录，同一天内，若日志文件大小等于或大于2M，则按0、1、2...顺序分别命名
+          例如log-level-2013-12-21.0.log
+          其它级别的日志也是如此。
+      2、文件路径
+          若开发、测试用，在Eclipse中运行项目，则到Eclipse的安装路径查找logs文件夹，以相对路径../logs。
+          若部署到Tomcat下，则在Tomcat下的logs文件中
+      3、Appender
+          FILEERROR对应error级别，文件名以log-error-xxx.log形式命名
+          FILEWARN对应warn级别，文件名以log-warn-xxx.log形式命名
+          FILEINFO对应info级别，文件名以log-info-xxx.log形式命名
+          FILEDEBUG对应debug级别，文件名以log-debug-xxx.log形式命名
+          stdout将日志信息输出到控制上，为方便开发测试使用
+   -->
+
+
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="LOG_HOME" value="/Users/xiaozhao/Technology/temp"/>
+    <!-- 读取 spring.application.name 属性来生成日志文件名
+        scope：作用域
+        namlogback-spring2.xml.xml 使用的键
+        source：application.properties 文件中的键
+        defaultValue：默认值
+    -->
+    <springProperty scope="context" name="logName" source="spring.application.name" defaultValue="bang.log"/>
+
+
+
+    <!-- 控制台输出 -->
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <!-- Console 输出设置 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/${logName}.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+        <!--日志文件最大的大小-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <!--用来设置某一个包或者具体的某一个类的日志打印级别-->
+    <!--打印MyBatis的sql语句-->
+    <logger name="com.xiaozhao.dao" level="DEBUG"></logger>
+
+
+    <!-- 日志输出级别，生产环境下需要移除控制台输出 -->
+    <!--<root level="INFO">-->
+    <!--<appender-ref ref="STDOUT"/>-->
+    <!--<appender-ref ref="FILE"/>-->
+    <!--</root>-->
+
+    <!--开发环境下只输出到控制台，不写日志文件-->
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+    <!-- 生产环境日志级别为INFO/并且记录日志文件 -->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+</configuration>
