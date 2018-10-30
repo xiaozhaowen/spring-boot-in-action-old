@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaozhao.dao.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.xiaozhao.domain.Role">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name
+    </sql>
+
+    <!--查询全部-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM role
+    </select>
+
+    <!--查询单个-->
+    <select id="selectOne" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM role
+        WHERE id=#{id}
+    </select>
+
+    <!--增加-->
+    <insert id="add" parameterType="com.xiaozhao.domain.Role">
+        INSERT INTO role(name) VALUES (#{name})
+    </insert>
+
+    <!--修改-->
+    <update id="update" parameterType="com.xiaozhao.domain.Role">
+        UPDATE role set name=#{name} WHERE id=#{id}
+    </update>
+
+    <!--删除-->
+    <delete id="delete" parameterType="Integer">
+        DELETE  FROM role WHERE id=#{id}
+    </delete>
+
+</mapper>
