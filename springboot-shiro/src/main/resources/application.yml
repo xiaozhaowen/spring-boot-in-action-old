@@ -1,0 +1,28 @@
+spring:
+  # 连接MySQL数据库
+  datasource:
+    username: root
+    password:
+    url: jdbc:mysql://localhost:3306/shiro2?useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 0
+    # 新版的pool配置需要加上jedis前缀
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+# mybatis 配置
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.xiaozhao.domain
+
+#打印mybatis的sql语句
+logging:
+  level:
+    com.xiaozhao.dao: debug

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" type="text/css">
+    <script th:src="@{/js/jquery.min.js}"></script>
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <input type="text" value="xiaozhao" placeholder="用户名" name="username" required="required"/>
+        <input type="password" value="123456" placeholder="密码" name="password" required="required"/>
+        <button onclick="login()">登录</button>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    var ctx = [[@{/}]];
+    function login() {
+        var username = $("input[name='username']").val();
+        var password = $("input[name='password']").val();
+        $.ajax({
+            type: "post",
+            url: ctx + "login",
+            data: {"username": username,"password": password},
+            dataType: "json",
+            success: function (r) {
+                console.log(r);
+                if (r.code == 0) {
+                    location.href = ctx + 'index';
+                } else {
+                    alert(r.msg);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
